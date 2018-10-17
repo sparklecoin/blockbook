@@ -37,9 +37,13 @@
     "service_additional_params_template": "",
     "protect_memory": false,
     "mainnet": true,
-    "config_file": "bitcoin.conf",
+    "server_config_file": "bitcoin.conf",
+    "client_config_file": "bitcoin_client.conf",
     "additional_params": {
-      "deprecatedrpc": "estimatefee"
+      "deprecatedrpc": "estimatefee",
+      "rpcuser": "rpc",
+      "rpcpassword": "rpc1",
+      "rpcport": 8042
     }
   },
   "blockbook": {
