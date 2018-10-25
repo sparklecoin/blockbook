@@ -173,3 +173,31 @@ func (b *CapricoinRPC) GetBlockHash(height uint32) (string, error) {
 	}
 	return res.Result, nil
 }
+
+// GetTransaction returns a transaction by the transaction ID.
+func (b *CapricoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
+	r, err := b.GetTransactionSpecific(txid)
+	if err != nil {
+		return nil, err
+	}
+	tx, err := b.Parser.ParseTxFromJson(r)
+	if err != nil {
+		return nil, errors.Annotatef(err, "txid %v", txid)
+	}
+	return tx, nil
+}
+
+// GetTransactionSpecific returns json as returned by backend, with all coin specific data
+func (b *CapricoinRPC) GetTransactionSpecific(txid string) (json.RawMessage, error) {
+	r, err := b.BitcoinRPC.GetTransactionSpecific(txid)
+	if err != nil {
+		return r, err
+	}
+	// Capricoind getrawtransaction returns multiple "time" fields with different values.
+	// We need to ensure the latter is removed.
+	result, err := removeDuplicateJSONKeys(r)
+	if err != nil {
+		return nil, errors.Annotatef(err, "txid %v", txid)
+	}
+	return result, nil
+}
