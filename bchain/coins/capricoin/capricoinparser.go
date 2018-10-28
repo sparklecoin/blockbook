@@ -1,14 +1,14 @@
 package capricoin
 
 import (
-	"blockbook/bchain/coins/btc"
-	"github.com/jakm/btcutil/chaincfg"
-	"github.com/btcsuite/btcd/wire"
 	"blockbook/bchain"
+	"blockbook/bchain/coins/btc"
 	"encoding/hex"
-	"math/big"
+	"github.com/btcsuite/btcd/wire"
 	"github.com/gogo/protobuf/proto"
+	"github.com/jakm/btcutil/chaincfg"
 	"github.com/juju/errors"
+	"math/big"
 )
 
 const (
@@ -24,11 +24,6 @@ func init() {
 	MainNetParams.Net = MainnetMagic
 	MainNetParams.PubKeyHashAddrID = []byte{28}
 	MainNetParams.ScriptHashAddrID = []byte{35}
-
-	err := chaincfg.Register(&MainNetParams)
-	if err != nil {
-		panic(err)
-	}
 }
 
 type CapricoinParser struct {
@@ -40,7 +35,16 @@ func NewCapricoinParser(params *chaincfg.Params, c *btc.Configuration) *Capricoi
 }
 
 func GetChainParams(chain string) *chaincfg.Params {
-	return &MainNetParams
+	if !chaincfg.IsRegistered(&MainNetParams) {
+		err := chaincfg.Register(&MainNetParams)
+		if err != nil {
+			panic(err)
+		}
+	}
+	switch chain {
+	default:
+		return &MainNetParams
+	}
 }
 
 // PackTx packs transaction to byte array using protobuf

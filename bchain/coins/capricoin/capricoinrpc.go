@@ -36,6 +36,7 @@ func (b *CapricoinRPC) Initialize() error {
 		return err
 	}
 
+	glog.Info("Chain name ", chainName)
 	params := GetChainParams(chainName)
 
 	// always create parser
@@ -100,7 +101,7 @@ func (b *CapricoinRPC) GetChainInfo() (*bchain.ChainInfo, error) {
 	if resI.Result.Testnet {
 		rv.Chain = "testnet"
 	} else {
-		rv.Chain = "mainnet"
+		rv.Chain = "livenet"
 	}
 	return rv, nil
 }
@@ -115,7 +116,21 @@ func (b *CapricoinRPC) GetBlock(hash string, height uint32) (*bchain.Block, erro
 			return nil, err
 		}
 	}
-	return b.GetBlockFull(hash)
+	block, err := b.GetBlockFull(hash)
+
+	for _, tx := range block.Txs {
+		for i := range tx.Vout {
+			vout := &tx.Vout[i]
+			// convert vout.JsonValue to big.Int and clear it, it is only temporary value used for unmarshal
+			vout.ValueSat, err = b.Parser.AmountToBigInt(vout.JsonValue)
+			if err != nil {
+				return nil, err
+			}
+			vout.JsonValue = ""
+		}
+	}
+
+	return block, err
 }
 
 func isErrBlockNotFound(err *bchain.RPCError) bool {
@@ -174,6 +189,12 @@ func (b *CapricoinRPC) GetBlockHash(height uint32) (string, error) {
 	return res.Result, nil
 }
 
+// GetTransactionForMempool returns a transaction by the transaction ID.
+// It could be optimized for mempool, i.e. without block time and confirmations
+func (b *CapricoinRPC) GetTransactionForMempool(txid string) (*bchain.Tx, error) {
+	return b.GetTransaction(txid)
+}
+
 // GetTransaction returns a transaction by the transaction ID.
 func (b *CapricoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
 	r, err := b.GetTransactionSpecific(txid)
@@ -183,6 +204,11 @@ func (b *CapricoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
 	tx, err := b.Parser.ParseTxFromJson(r)
 	if err != nil {
 		return nil, errors.Annotatef(err, "txid %v", txid)
+	}
+	for i := range tx.Vout {
+		if tx.Vout[i].ScriptPubKey.Addresses == nil {
+			tx.Vout[i].ScriptPubKey.Addresses = []string{}
+		}
 	}
 	return tx, nil
 }
