@@ -263,6 +263,7 @@ type resTx struct {
 	// BlockHash      string      `json:"blockHash,omitempty"`
 	Height         int    `json:"height"`
 	BlockTimestamp int64  `json:"blockTimestamp,omitempty"`
+	Time           int64  `json:"time,omitempty"`
 	Version        int    `json:"version"`
 	Hash           string `json:"hash"`
 	Locktime       int    `json:"locktime,omitempty"`
@@ -338,6 +339,7 @@ func txToResTx(tx *api.Tx) resTx {
 	}
 	return resTx{
 		BlockTimestamp: tx.Blocktime,
+		Time:           tx.Time,
 		FeeSatoshis:    tx.FeesSat.Int64(),
 		Hash:           tx.Txid,
 		Height:         h,
