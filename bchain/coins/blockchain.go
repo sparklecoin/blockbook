@@ -5,6 +5,7 @@ import (
 	"blockbook/bchain/coins/bch"
 	"blockbook/bchain/coins/btc"
 	"blockbook/bchain/coins/btg"
+	"blockbook/bchain/coins/peercoin"
 	"blockbook/bchain/coins/capricoin"
 	"blockbook/bchain/coins/dash"
 	"blockbook/bchain/coins/digibyte"
@@ -59,6 +60,7 @@ func init() {
 	BlockChainFactories["DigiByte"] = digibyte.NewDigiByteRPC
 	BlockChainFactories["Myriad"] = myriad.NewMyriadRPC
 	BlockChainFactories["Capricoin"] = capricoin.NewCapricoinRPC
+	BlockChainFactories["Peercoin"] = peercoin.NewPeercoinRPC
 	BlockChainFactories["Groestlcoin"] = grs.NewGroestlcoinRPC
 	BlockChainFactories["Groestlcoin Testnet"] = grs.NewGroestlcoinRPC
 }

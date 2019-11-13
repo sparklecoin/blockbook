@@ -1,0 +1,27 @@
+version: '3'
+services:
+  blockbook:
+     image: blockbook-peercoin
+     links:
+       - peercoind
+     ports:
+       - 8080:8080
+     volumes:
+      - "blockbook_datadir:/data"
+
+  peercoind:
+    image: peercoin/peercoind:0.8.4
+    environment:
+      - RPC_USER=peercoinrpc
+      - RPC_PASSWORD=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
+    command:
+      -nominting
+    expose:
+      - "9901"
+      - "9902"
+    volumes:
+      - "peercoin_datadir:/data"
+
+volumes:
+  peercoin_datadir:  
+  blockbook_datadir:

@@ -27,10 +27,17 @@ type BitcoinParser struct {
 
 // NewBitcoinParser returns new BitcoinParser instance
 func NewBitcoinParser(params *chaincfg.Params, c *Configuration) *BitcoinParser {
+	var decimals int
+	peercoin := make([]byte, 0x55)
+	if bytes.Equal(params.PubKeyHashAddrID, peercoin) {
+		decimals = 6;
+	} else {
+		decimals = 8;
+	}
 	p := &BitcoinParser{
 		BaseParser: &bchain.BaseParser{
 			BlockAddressesToKeep: c.BlockAddressesToKeep,
-			AmountDecimalPoint:   8,
+			AmountDecimalPoint:   decimals,
 		},
 		Params: params,
 	}
