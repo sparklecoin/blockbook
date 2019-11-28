@@ -4,9 +4,9 @@ import (
 	"blockbook/bchain"
 	"blockbook/bchain/coins/btc"
 	"encoding/hex"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/martinboehm/btcd/wire"
 	"github.com/gogo/protobuf/proto"
-	"github.com/jakm/btcutil/chaincfg"
+	"github.com/martinboehm/btcutil/chaincfg"
 	"github.com/juju/errors"
 	"math/big"
 )

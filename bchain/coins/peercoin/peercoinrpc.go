@@ -226,7 +226,7 @@ func (b *PeercoinRPC) GetTransactionForMempool(txid string) (*bchain.Tx, error) 
 
 // GetTransaction returns a transaction by the transaction ID.
 func (b *PeercoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
-	r, err := b.GetTransactionSpecific(txid)
+	r, err := b.BitcoinRPC.GetTransactionSpecific(txid)
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +241,7 @@ func (b *PeercoinRPC) GetTransaction(txid string) (*bchain.Tx, error) {
 	}
 	return tx, nil
 }
-
+/*
 // GetTransactionSpecific returns json as returned by backend, with all coin specific data
 func (b *PeercoinRPC) GetTransactionSpecific(txid string) (json.RawMessage, error) {
 	r, err := b.BitcoinRPC.GetTransactionSpecific(txid)
@@ -256,3 +256,4 @@ func (b *PeercoinRPC) GetTransactionSpecific(txid string) (json.RawMessage, erro
 	}
 	return result, nil
 }
+*/

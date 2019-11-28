@@ -4,15 +4,16 @@ import (
 	"blockbook/bchain"
 	"blockbook/bchain/coins/btc"
 	"encoding/hex"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/martinboehm/btcd/wire"
 	"github.com/gogo/protobuf/proto"
-	"github.com/jakm/btcutil/chaincfg"
+	"github.com/martinboehm/btcutil/chaincfg"
 	"github.com/juju/errors"
 	"math/big"
 )
 
 const (
 	MainnetMagic wire.BitcoinNet = 0xe6e8e9e5
+	TestnetMagic wire.BitcoinNet = 0xcbf2c0ef
 )
 
 var (
@@ -24,6 +25,13 @@ func init() {
 	MainNetParams.Net = MainnetMagic
 	MainNetParams.PubKeyHashAddrID = []byte{55}
 	MainNetParams.ScriptHashAddrID = []byte{117}
+	MainNetParams.Bech32HRPSegwit = "pc"
+
+	TestNetParams = chaincfg.TestNet3Params
+	TestNetParams.Net = TestnetMagic
+	TestNetParams.PubKeyHashAddrID = []byte{111}
+	TestNetParams.ScriptHashAddrID = []byte{196}
+	TestNetParams.Bech32HRPSegwit = "tpc"
 }
 
 type PeercoinParser struct {
@@ -37,11 +45,16 @@ func NewPeercoinParser(params *chaincfg.Params, c *btc.Configuration) *PeercoinP
 func GetChainParams(chain string) *chaincfg.Params {
 	if !chaincfg.IsRegistered(&MainNetParams) {
 		err := chaincfg.Register(&MainNetParams)
+		if err == nil {
+			err = chaincfg.Register(&TestNetParams)
+		}
 		if err != nil {
 			panic(err)
 		}
 	}
 	switch chain {
+	case "test":
+		return &TestNetParams
 	default:
 		return &MainNetParams
 	}
