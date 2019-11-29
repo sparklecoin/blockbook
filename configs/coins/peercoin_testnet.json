@@ -1,18 +1,18 @@
 {
   "coin": {
-    "name": "Peercoin",
-    "shortcut": "PPC",
-    "label": "Peercoin",
-    "alias": "peercoin"
+    "name": "Peercoin Testnet",
+    "shortcut": "tPPC",
+    "label": "Peercoin Testnet",
+    "alias": "peercoin_testnet"
   },
   "ports": {
-    "backend_rpc": 9902,
-    "backend_message_queue": 38347,
-    "blockbook_internal": 9047,
-    "blockbook_public": 9147
+    "backend_rpc": 9904,
+    "backend_message_queue": 38348,
+    "blockbook_internal": 9048,
+    "blockbook_public": 9148
   },
   "ipc": {
-    "rpc_url_template": "http://lpeercoind:{{.Ports.BackendRPC}}",
+    "rpc_url_template": "http://tpeercoind:{{.Ports.BackendRPC}}",
     "rpc_user": "peercoinrpc",
     "rpc_pass": "Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC",
     "rpc_timeout": 25,
@@ -36,7 +36,7 @@
     "service_type": "forking",
     "service_additional_params_template": "",
     "protect_memory": false,
-    "mainnet": true,
+    "mainnet": false,
     "server_config_file": "bitcoin.conf",
     "client_config_file": "bitcoin_client.conf",
     "additional_params": {

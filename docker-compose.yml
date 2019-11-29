@@ -3,13 +3,13 @@ services:
   blockbook:
      image: blockbook-peercoin
      links:
-       - peercoind
+       - lpeercoind
      ports:
        - 8080:8080
      volumes:
       - "blockbook_datadir:/data"
 
-  peercoind:
+  lpeercoind:
     image: peercoin/peercoind:0.8.4
     environment:
       - RPC_USER=peercoinrpc

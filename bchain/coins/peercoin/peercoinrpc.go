@@ -65,6 +65,7 @@ type ResGetInfo struct {
 		Difficulty      float64     `json:"difficulty"`
 		BestBlockHash   string      `json:"bestblockhash"`
 		Testnet bool `json:"testnet"`
+		Chain           string      `json:"chain"`
 	} `json:"result"`
 }
 
@@ -124,7 +125,7 @@ func (b *PeercoinRPC) GetChainInfo() (*bchain.ChainInfo, error) {
 		Version:         string(resNi.Result.Version),
 		ProtocolVersion: string(resNi.Result.ProtocolVersion),
 	}
-	if resI.Result.Testnet {
+	if resI.Result.Chain == "test" {
 		rv.Chain = "testnet"
 	} else {
 		rv.Chain = "livenet"

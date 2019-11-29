@@ -1,0 +1,28 @@
+version: '3'
+services:
+  tpeercoind:
+    image: peercoin/peercoind:0.8.4
+    environment:
+      - RPC_USER=peercoinrpc
+      - RPC_PASSWORD=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
+    command:
+      -nominting
+      -testnet
+    expose:
+      - "9903"
+      - "9904"
+    volumes:
+      - "tpeercoin_datadir:/data"
+
+  tblockbook:
+     image: blockbook-peercoin_testnet
+     links:
+       - tpeercoind
+     ports:
+       - 18080:8080
+     volumes:
+      - "tblockbook_datadir:/data"
+
+volumes:
+  tpeercoin_datadir:  
+  tblockbook_datadir:

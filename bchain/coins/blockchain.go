@@ -61,6 +61,7 @@ func init() {
 	BlockChainFactories["Myriad"] = myriad.NewMyriadRPC
 	BlockChainFactories["Capricoin"] = capricoin.NewCapricoinRPC
 	BlockChainFactories["Peercoin"] = peercoin.NewPeercoinRPC
+	BlockChainFactories["Peercoin Testnet"] = peercoin.NewPeercoinRPC
 	BlockChainFactories["Groestlcoin"] = grs.NewGroestlcoinRPC
 	BlockChainFactories["Groestlcoin Testnet"] = grs.NewGroestlcoinRPC
 }
