@@ -1,27 +1,30 @@
 version: '3'
 services:
   blockbook:
-     image: blockbook-peercoin
+     image: blockbook-sparklecoin
      links:
-       - lpeercoind
+       - lsparklecoind
      ports:
        - 8080:8080
      volumes:
       - "blockbook_datadir:/data"
 
-  lpeercoind:
-    image: peercoin/peercoind:0.8.4
+  lsparklecoind:
+    image: sparklecoin/sparklecoind:1.2.3
     environment:
       - RPC_USER=peercoinrpc
       - RPC_PASSWORD=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
     command:
-      -nominting
+      -debug
+      -rpcallowip=*
+      -rpcuser=peercoinrpc
+      -rpcpassword=Dodm2a7tUGEDcUzZfQacSFKmgfiJSwZNFs6hi6YFqBnC
     expose:
-      - "9901"
-      - "9902"
+      - "6020"
+      - "6021"
     volumes:
-      - "peercoin_datadir:/data"
+      - "sparklecoin_datadir:/data"
 
 volumes:
-  peercoin_datadir:  
+  sparklecoin_datadir:  
   blockbook_datadir:
